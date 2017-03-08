@@ -8,7 +8,7 @@
 // public domain / CC0
 //
 // Requires LSL script permissions and
-// OSSL permissions for osGetRegionMapTexture.
+// OSSL permissions for osGetMapTexture.
 // Terrain sculpts can be created by
 // e.g. TerrainReader1 or similar.
 
@@ -17,9 +17,9 @@ default
 {
     state_entry()
     {
-        // Get region name, get map tile for region,
+        // Get map tile for present region,
         // apply as texture to sculpted prim
         // with texture placement adjustments.
-        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, osGetRegionMapTexture(llGetRegionName()), 32.0/31.0*<1.0,1.0,0.0>, (1.0/31.0-1.0/255.0)*<0.5,0.5,0.0>, 0.0]);
+        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, osGetMapTexture(), 32.0/31.0*<1.0,1.0,0.0>, (1.0/31.0-1.0/255.0)*<0.5,0.5,0.0>, 0.0]);
     }
 }
