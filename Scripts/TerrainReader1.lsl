@@ -10,7 +10,6 @@
 // backend cgi at serviceURL and
 // LSL script permissions.
 // Returns a sculpt texture as TGA,
-// may need extension changed from .cgi to .tga,
 // to be uploaded and applied to a prim,
 // with prim type: sculpt, sculpt type: plane.
 
@@ -137,7 +136,7 @@ default
         }
         // Link to sculpt texture
         if ( row == max ) {
-            llLoadURL(llGetOwner(), "Get terrain sculpt map.\nChange extension of the download from .cgi to .tga if needed.\nUpload to OpenSimulator and apply to prim, with prim type: sculpt, sculpt type: plane.\nApply map tile as texture with repeats 32/31*<1,1,0>, offsets (1/31-1/255)*<0.5,0.5,0>, rotation 0.", serviceURL+"?id="+llEscapeURL(id));
+            llLoadURL(llGetOwner(), "Get terrain sculpt map.\nUpload to OpenSimulator and apply to prim, with prim type: sculpt, sculpt type: plane.\nApply map tile as texture with repeats 32/31*<1,1,0>, offsets (1/31-1/255)*<0.5,0.5,0>, rotation 0.", serviceURL+"?id="+llEscapeURL(id));
         }
     }
 }
