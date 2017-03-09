@@ -3,7 +3,7 @@
 // Creates sculpts from terrains.
 //
 // LSL for OpenSimulator
-// by Magnuz Binder @hypergrid.org:8002 2017-03-08
+// by Magnuz Binder @hypergrid.org:8002 2017-03-09
 // public domain / CC0
 //
 // Requires a 256x256 m region,
@@ -26,17 +26,19 @@ list httpParams = [
 ];
 key httpReq;
 
-// Constants and global variables
-string chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+// Constants
+float size = 256.0; // region size in meters, change for varregion
+float attenuation = 1.0; // height attenuation
+integer max = 32; // sculpt resolution
+integer uStep = 32; // X chunk size
+integer vStep = 2; // Y chunk size
+string chars = "0123456789abcdefghijklmnopqrstuvwxyz"; // hexadecimal+extra
+
+// Global variables
 integer cHi;
 string id;
-integer max = 32;
 integer row;
 vector pos;
-integer uStep = 32;
-integer vStep = 2;
-float size = 256.0;
-float att = 2.0;
 
 // Main program
 default
@@ -96,16 +98,16 @@ default
             integer w1;
             // For each row in chunk
             for ( v = vLo; v < vHi; v++ ) {
-                y = (size-1.0)*(float)v/(float)(max-1);
-                v1 = llRound(y);
-                y = (float)v1-pos.y;
+                v1 = llRound(255.0*(float)v/(float)(max-1));
+                y = size*(float)v1/255.0-pos.y;
                 // For each column in chunk
                 for ( u = uLo; u < uHi; u++ ) {
-                    x = (size-1.0)*(float)u/(float)(max-1);
-                    u1 = llRound(x);
-                    x = (float)u1-pos.x;
+                    u1 = llRound(255.0*(float)u/(float)(max-1));
+                    x = size*(float)u1/255.0-pos.x;
                     // Get terrain height
-                    w1 = llRound(att*llGround(<x,y,0.0>));
+                    w1 = llRound(attenuation*2.0*llGround(<x,y,0.0>));
+                    if ( w1 < 0 )
+                        w1 = 0;
                     if ( w1 > 255 )
                         w1 = 255;
                     // Hex-code integer position and height
@@ -126,17 +128,15 @@ default
         }
         // Send HTTP requests with data (row<max)
         // Send HTTP request to finish (row=max)
-        if ( row <= max ) {
+        if ( row <= max )
             httpReq = llHTTPRequest(serviceURL+
                 "?id="+llEscapeURL(id)+
                 "&max="+llEscapeURL((string)max)+
                 "&row="+llEscapeURL((string)row)+
                 "&data="+data,
             httpParams, "");
-        }
         // Link to sculpt texture
-        if ( row == max ) {
+        if ( row == max )
             llLoadURL(llGetOwner(), "Get terrain sculpt map.\nUpload to OpenSimulator and apply to prim, with prim type: sculpt, sculpt type: plane.\nApply map tile as texture with repeats 32/31*<1,1,0>, offsets (1/31-1/255)*<0.5,0.5,0>, rotation 0.", serviceURL+"?id="+llEscapeURL(id));
-        }
     }
 }
