@@ -4,7 +4,7 @@
 // on a terrain sculpt prim.
 //
 // LSL for OpenSimulator
-// by Magnuz Binder @hypergrid.org:8002 2017-03-08
+// by Magnuz Binder @hypergrid.org:8002 2017-03-09
 // public domain / CC0
 //
 // Requires LSL script permissions and
@@ -20,6 +20,6 @@ default
         // Get map tile for present region,
         // apply as texture to sculpted prim
         // with texture placement adjustments.
-        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, osGetMapTexture(), 32.0/31.0*255.0/256.0*<1.0,1.0,0.0>, (1.0/31.0-1.0/256.0)*<0.5,0.5,0.0>, 0.0]);
+        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, osGetMapTexture(), 32.0/31.0*<1.0,1.0,0.0>, 1.0/31.0*<0.5,0.5,0.0>, 0.0]);
     }
 }
